@@ -14,17 +14,11 @@ public class ConnectToRserve implements Connection{
 			connection = new RConnection();
 			
 			connection.eval("setwd('/Users/richardblankenhorn/workspace/RserveProject')");
-			String pwd = connection.eval("getwd()").asString();
-			System.out.println(pwd);
 			String path = "source(" + "'" + filename + "')";
-			System.out.println(path);
 			connection.eval(path);
-			//connection.eval("source('rserveTest.R')");
 			
 			
 		} catch (RserveException e) {
-			e.printStackTrace();
-		} catch (REXPMismatchException e) {
 			e.printStackTrace();
 		} 
 		return connection;
