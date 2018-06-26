@@ -13,7 +13,7 @@ public class ConnectToRserve implements Connection{
 		try {
 			connection = new RConnection();
 			
-			connection.eval("setwd('/Users/richardblankenhorn/Desktop')");
+			connection.eval("setwd('/Users/richardblankenhorn/workspace/RserveProject')");
 			String pwd = connection.eval("getwd()").asString();
 			System.out.println(pwd);
 			String path = "source(" + "'" + filename + "')";
