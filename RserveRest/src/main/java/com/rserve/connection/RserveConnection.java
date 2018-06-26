@@ -35,7 +35,7 @@ public class RserveConnection {
 			
 			String pwd = connection.eval("getwd()").asString();
 //			System.out.println(pwd);
-			connection.eval("setwd('/Users/richardblankenhorn/Desktop')");
+			connection.eval("setwd('/Users/richardblankenhorn/workspace/RserveProject')");
 			pwd = connection.eval("getwd()").asString();
 //			System.out.println(pwd);
 			connection.eval("source('rserveTest.R')");
