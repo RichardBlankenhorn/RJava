@@ -15,10 +15,10 @@ import com.rserve.services.RserveService;
 @CrossOrigin({ "*", "http://localhost:4200" })
 @RequestMapping(path = "/api")
 public class RserveController {
-	
+
 	@Autowired
 	private RserveService service;
-	
+
 	@RequestMapping(path = "/dataframe", method = RequestMethod.GET)
 	public DataFrame index() {
 		try {
@@ -28,11 +28,21 @@ public class RserveController {
 			return null;
 		}
 	}
-	
+
 	@RequestMapping(path = "/getDF/{df}", method = RequestMethod.GET)
 	public DataFrame getSelectedDF(@PathVariable String df) {
 		try {
 			return service.getDataFrame(df);
+		} catch (REngineException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+
+	@RequestMapping(path = "/getDF/{df}/stats", method = RequestMethod.GET)
+	public DataFrame getSumStats(@PathVariable String df) {
+		try {
+			return service.getSumStats(df);
 		} catch (REngineException e) {
 			e.printStackTrace();
 			return null;

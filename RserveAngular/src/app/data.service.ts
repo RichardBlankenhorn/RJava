@@ -20,5 +20,14 @@ export class DataService {
     );
   }
 
+  getSumStats(dsn) {
+    return this.http.get(this.baseUrl + 'api/getDF/' + dsn + '/stats').pipe(
+      catchError((err: any) => {
+        console.log(err);
+        return throwError('Sum Stats Error');
+      })
+    );
+  }
+
   constructor(private http: HttpClient) { }
 }

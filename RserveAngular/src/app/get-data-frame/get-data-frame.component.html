@@ -302,31 +302,52 @@
           <div class="col-lg-8">
               <div class="panel panel-default">
                   <div class="panel-heading">
-                      <i class="fa fa-bar-chart-o fa-fw"></i> Area Chart Example
+                      <i class="fa"></i> ISLR Dataset Summary Statistics for Numeric Variables
                       <div class="pull-right">
                           <div class="btn-group">
-                              <button type="button" class="btn btn-default btn-xs dropdown-toggle"
+                              <!-- <button type="button" class="btn btn-default btn-xs dropdown-toggle"
                                       data-toggle="dropdown">
                                   Actions
                                   <span class="caret"></span>
-                              </button>
-                              <ul class="dropdown-menu pull-right" role="menu">
-                                  <li><a href="#">Action</a>
-                                  </li>
-                                  <li><a href="#">Another action</a>
-                                  </li>
-                                  <li><a href="#">Something else here</a>
-                                  </li>
-                                  <li class="divider"></li>
-                                  <li><a href="#">Separated link</a>
-                                  </li>
-                              </ul>
+                              </button> -->
                           </div>
                       </div>
                   </div>
                   <!-- /.panel-heading -->
                   <div class="panel-body">
-                      <div id="morris-area-chart"></div>
+                      <div class="row">
+                          <div class="col-lg-12">
+                            <div class="form-group">
+                            <select name="data" class="form-control" [(ngModel)]='sumStatSelected'>
+                              <option *ngFor='let dsn of datasets' value="{{dsn}}" >{{dsn}}</option>
+                            </select>
+                            <br>
+                            <button (click)='getSumStats()' type='submit' class='btn btn-success btn-sx'>Select</button>
+                          </div>
+                              <div class="table-responsive">
+                                  <table *ngIf='sumStats !== null' class="table table-bordered table-hover table-striped">
+                                      <thead>
+                                      <tr *ngIf='sumStats !== null'>
+                                          <!-- <th>Statistic</th> -->
+                                          <th *ngFor='let name of sumStats.names'>{{name}}</th>
+                                      </tr>
+                                      </thead>
+                                      <tbody>
+                                      <tr *ngFor="let i = index; let n of statArr ">
+                                          <td *ngFor='let v of sumStats.objValues; let j = index'>{{v[n]}}
+                                          </td>
+                                      </tr>
+                                      </tbody>
+                                  </table>
+                              </div>
+                              <!-- /.table-responsive -->
+                          </div>
+                          <!-- /.col-lg-4 (nested) -->
+                          <!-- <div class="col-lg-8">
+                              <div id="morris-bar-chart"></div>
+                          </div> -->
+                          <!-- /.col-lg-8 (nested) -->
+                      </div>
                   </div>
                   <!-- /.panel-body -->
               </div>
@@ -345,6 +366,7 @@
                       </div>
                   </div>
                   <!-- /.panel-heading -->
+                  <!-- DISPLAY ISLR DATA-->
                   <div class="panel-body">
                       <div class="row">
                           <div class="col-lg-12">
@@ -354,8 +376,8 @@
                             </select>
                             <br>
                             <button (click)='getDataSet()' type='submit' class='btn btn-success btn-sx'>Select</button>
-                            <button (click)='prevTen()' type='submit' class='btn btn-success btn-sx' style='margin-left: 10px'>Prev 10</button>
-                            <button (click)='nextTen()' type='submit' class='btn btn-success btn-sx' style='margin-left: 10px'>Next 10</button>
+                            <button *ngIf='data != null' (click)='prevTen()' type='submit' class='btn btn-success btn-sx' style='margin-left: 10px'>Prev 10</button>
+                            <button *ngIf='data != null' (click)='nextTen()' type='submit' class='btn btn-success btn-sx' style='margin-left: 10px'>Next 10</button>
                           </div>
                               <div class="table-responsive">
                                   <table *ngIf='data !== null' class="table table-bordered table-hover table-striped">

@@ -12,9 +12,15 @@ export class GetDataFrameComponent implements OnInit {
 
   data = null;
 
+  sumStats = null;
+
   datasetLength = 0;
 
+  sumStatsLength = 0;
+
   selected = 'Auto';
+
+  sumStatSelected = 'Auto';
 
   index = 0;
 
@@ -23,6 +29,8 @@ export class GetDataFrameComponent implements OnInit {
   end = 10;
 
   arr = new Array(10);
+
+  statArr = new Array(15);
 
   getDataSet = function() {
     this.arr = new Array();
@@ -35,8 +43,25 @@ export class GetDataFrameComponent implements OnInit {
       data => {
         this.data = data;
         this.datasetLength = data.objValues[0].length;
+        console.log(data);
       },
       err => console.error('Get Dataset Got an Error: ' + err)
+    );
+  };
+
+  getSumStats = function() {
+    this.statArr = new Array();
+    // this.start = 0;
+    // this.end = 10;
+    for (let i = 0; i < 14; i++) {
+      this.statArr.push(i);
+    }
+    this.dataService.getSumStats(this.sumStatSelected).subscribe(
+      data => {
+        this.sumStats = data;
+        console.log(data);
+      },
+      err => console.error('Get Sum Stats Got an Error: ' + err)
     );
   };
 
