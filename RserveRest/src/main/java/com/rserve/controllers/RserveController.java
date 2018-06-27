@@ -3,6 +3,7 @@ package com.rserve.controllers;
 import org.rosuda.REngine.REngineException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -22,6 +23,16 @@ public class RserveController {
 	public DataFrame index() {
 		try {
 			return service.getDataFrame("df");
+		} catch (REngineException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
+	@RequestMapping(path = "/getDF/{df}", method = RequestMethod.GET)
+	public DataFrame getSelectedDF(@PathVariable String df) {
+		try {
+			return service.getDataFrame(df);
 		} catch (REngineException e) {
 			e.printStackTrace();
 			return null;

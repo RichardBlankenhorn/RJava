@@ -28,13 +28,14 @@ public class RserveServiceImpl implements RserveService {
 		RConnection rcon = connection.initiateConnection("rserveTest.R");
 		DataFrame dataFrame = new DataFrame();
 		
-		List<Map<String, List<Double>>> numericValues = new ArrayList<>();
-		List<Map<String, List<String>>> factorValues = new ArrayList<>();
+//		List<Map<String, List<Double>>> numericValues = new ArrayList<>();
+//		List<Map<String, List<String>>> factorValues = new ArrayList<>();
+		List<List<Object>> objValues = new ArrayList<>();
 		
 		try {
 			
 //			RList dataframe = rcon.parseAndEval("myWholeDF()").asList();
-			String dsn = "OJ";
+			String dsn = df;
 			String path = "getDataFrame(" + "'" + dsn + "'" + ")";
 			RList dataframe = rcon.parseAndEval(path).asList();
 			
@@ -42,30 +43,33 @@ public class RserveServiceImpl implements RserveService {
 			for(int i = 0; i < dataframe.names.size(); i++) {
 				names.add(dataframe.names.get(i).toString());
 				if(dataframe.at(i).isNumeric() && !dataframe.at(i).isFactor()) {
-					Map<String, List<Double>> numMap = new HashMap<>();
-					List<Double> nums = new ArrayList<>();
+//					Map<String, List<Object>> numMap = new HashMap<>();
+					List<Object> nums = new ArrayList<>();
 					double[] doubleValues = dataframe.at(i).asDoubles();
 					for(int j = 0; j < doubleValues.length; j++) {
 						nums.add(doubleValues[j]);
 					}
-					numMap.put(dataframe.names.get(i).toString(), nums);
-					numericValues.add(numMap);
+//					numMap.put(dataframe.names.get(i).toString(), nums);
+//					numericValues.add(numMap);
+					objValues.add(nums);
 				}
 				else if(dataframe.at(i).isFactor()) {
-					Map<String, List<String>> factorMap = new HashMap<>();
-					List<String> factors = new ArrayList<>();
+//					Map<String, List<Object>> factorMap = new HashMap<>();
+					List<Object> factors = new ArrayList<>();
 					String[] stringValues = dataframe.at(i).asStrings();
 					for(int k = 0; k < stringValues.length; k++) {
 						factors.add(stringValues[k]);
 					}
-					factorMap.put(dataframe.names.get(i).toString(), factors);
-					factorValues.add(factorMap);
+//					factorMap.put(dataframe.names.get(i).toString(), factors);
+//					factorValues.add(factorMap);
+					objValues.add(factors);
 				}
 			}
 			
 			dataFrame.setNames(names);
-			dataFrame.setNumericValues(numericValues);
-			dataFrame.setFactorValues(factorValues);
+			dataFrame.setObjValues(objValues);
+//			dataFrame.setNumericValues(numericValues);
+//			dataFrame.setFactorValues(factorValues);
 			return dataFrame;
 			
 		} catch (RserveException | REXPMismatchException e) {

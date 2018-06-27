@@ -10,21 +10,17 @@ public class DataFrame {
 
 	private List<String> names;
 
-	private List<Map<String, List<Double>>> numericValues;
-
-	private List<Map<String, List<String>>> factorValues;
+	private List<List<Object>> objValues;
 
 	public DataFrame() {
 
 	}
 
-	public DataFrame(String title, List<String> names, List<Map<String, List<Double>>> numericValues,
-			List<Map<String, List<String>>> factorValues) {
+	public DataFrame(String title, List<String> names, List<List<Object>> objValues) {
 		super();
 		this.title = title;
 		this.names = names;
-		this.numericValues = numericValues;
-		this.factorValues = factorValues;
+		this.objValues = objValues;
 	}
 
 	public String getTitle() {
@@ -43,20 +39,12 @@ public class DataFrame {
 		this.names = names;
 	}
 
-	public List<Map<String, List<Double>>> getNumericValues() {
-		return numericValues;
+	public List<List<Object>> getObjValues() {
+		return objValues;
 	}
 
-	public void setNumericValues(List<Map<String, List<Double>>> numericValues) {
-		this.numericValues = numericValues;
-	}
-
-	public List<Map<String, List<String>>> getFactorValues() {
-		return factorValues;
-	}
-
-	public void setFactorValues(List<Map<String, List<String>>> factorValues) {
-		this.factorValues = factorValues;
+	public void setObjValues(List<List<Object>> objValues) {
+		this.objValues = objValues;
 	}
 
 	@Override
@@ -68,9 +56,8 @@ public class DataFrame {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((factorValues == null) ? 0 : factorValues.hashCode());
 		result = prime * result + ((names == null) ? 0 : names.hashCode());
-		result = prime * result + ((numericValues == null) ? 0 : numericValues.hashCode());
+		result = prime * result + ((objValues == null) ? 0 : objValues.hashCode());
 		result = prime * result + ((title == null) ? 0 : title.hashCode());
 		return result;
 	}
@@ -84,20 +71,15 @@ public class DataFrame {
 		if (getClass() != obj.getClass())
 			return false;
 		DataFrame other = (DataFrame) obj;
-		if (factorValues == null) {
-			if (other.factorValues != null)
-				return false;
-		} else if (!factorValues.equals(other.factorValues))
-			return false;
 		if (names == null) {
 			if (other.names != null)
 				return false;
 		} else if (!names.equals(other.names))
 			return false;
-		if (numericValues == null) {
-			if (other.numericValues != null)
+		if (objValues == null) {
+			if (other.objValues != null)
 				return false;
-		} else if (!numericValues.equals(other.numericValues))
+		} else if (!objValues.equals(other.objValues))
 			return false;
 		if (title == null) {
 			if (other.title != null)
