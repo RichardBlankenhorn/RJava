@@ -1,8 +1,7 @@
 library(reshape2)
 library(ISLR)
 library(pastecs)
-
-## eval(parse(text="Auto"))
+library(ggplot2)
 
 myList <- function(x, y, z) {
   l <- list(x,y,z)
@@ -55,3 +54,28 @@ getSummaryStatsNumeric <- function(dsn) {
   stats <- round(stat.desc(df), digits = 2)
   return(list(stats, row.names(stats)))
 }
+
+# Return Linear Model On Full Data Set (Numeric Vars)
+linRegression <- function(dsn, respVar) {
+  dta <- eval(parse(text=dsn))
+  columnNames <- colnames(dta)
+  colTypes <- sapply(dta, class)
+  index <- 1
+  myVec <- c()
+  for (var in colTypes) {
+    if (var == "numeric" | var == "integer" | var == "double") {
+      if (columnNames[index] != respVar) {
+        myVec <- c(myVec, columnNames[index])
+      }
+    }
+    index <- index + 1
+  }
+  form <- as.formula(paste(respVar, "~", paste(myVec, collapse=" + ")))
+  mod <- glm(form, data = dta)
+  sum <- summary(mod)
+  return(list(sum['coefficients'], row.names(as.data.frame(sum['coefficients'])), sum['aic'], sum['null.deviance'], sum['deviance']))
+}
+
+
+
+
