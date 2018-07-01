@@ -1,5 +1,7 @@
 package com.rserve.controllers;
 
+import java.util.List;
+
 import org.rosuda.REngine.REngineException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -47,6 +49,21 @@ public class RserveController {
 			e.printStackTrace();
 			return null;
 		}
+	}
+	
+	@RequestMapping(path = "/getLinModel/{df}/response/{respVar}", method = RequestMethod.GET)
+	public DataFrame getLinModel(@PathVariable String df, @PathVariable String respVar) {
+		try {
+			return service.getLinModel(df, respVar);
+		} catch (REngineException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
+	@RequestMapping(path = "/getVarNames/{df}", method = RequestMethod.GET)
+	public List<String> getVarNames(@PathVariable String df) {
+		return service.getVarNames(df);
 	}
 
 }

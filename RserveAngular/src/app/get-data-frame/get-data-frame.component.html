@@ -208,127 +208,97 @@
               <div class="panel panel-primary">
                   <div class="panel-heading">
                       <div class="row">
-                          <!-- <div class="col-xs-3">
-                              <i class="fa "></i>
-                          </div> -->
                           <div class="col-xs-9 text-center">
-                              <!-- <div class="huge">26</div> -->
                               <div>Review Raw Data</div>
                           </div>
                       </div>
                   </div>
-                  <!-- <a href="#">
-                      <div class="panel-footer">
-                          <span class="pull-left">View Details</span>
-                          <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
-
-                          <div class="clearfix"></div>
-                      </div>
-                  </a> -->
               </div>
           </div>
           <div class="col-lg-3 col-md-6">
               <div class="panel panel-green">
                   <div class="panel-heading">
                       <div class="row">
-                          <!-- <div class="col-xs-3">
-                              <i class="fa fa-tasks fa-5x"></i>
-                          </div> -->
                           <div class="col-xs-9 text-center">
-                              <!-- <div class="huge">12</div> -->
                               <div>Summary Statistics</div>
                           </div>
                       </div>
                   </div>
-                  <!-- <a href="#">
-                      <div class="panel-footer">
-                          <span class="pull-left">View Details</span>
-                          <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
-
-                          <div class="clearfix"></div>
-                      </div>
-                  </a> -->
               </div>
           </div>
           <div class="col-lg-3 col-md-6">
               <div class="panel panel-yellow">
                   <div class="panel-heading">
                       <div class="row">
-                          <!-- <div class="col-xs-3">
-                              <i class="fa fa-shopping-cart fa-5x"></i>
-                          </div> -->
                           <div class="col-xs-9 text-center">
-                              <!-- <div class="huge">124</div> -->
                               <div>Regression</div>
                           </div>
                       </div>
                   </div>
-                  <!-- <a href="#">
-                      <div class="panel-footer">
-                          <span class="pull-left">View Details</span>
-                          <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
-
-                          <div class="clearfix"></div>
-                      </div>
-                  </a> -->
               </div>
           </div>
           <div class="col-lg-3 col-md-6">
               <div class="panel panel-red">
                   <div class="panel-heading">
                       <div class="row">
-                          <!-- <div class="col-xs-3">
-                              <i class="fa fa-support fa-5x"></i>
-                          </div> -->
                           <div class="col-xs-9 text-center">
-                              <!-- <div class="huge">13</div> -->
                               <div>Analyze Data</div>
                           </div>
                       </div>
                   </div>
-                  <!-- <a href="#">
-                      <div class="panel-footer">
-                          <span class="pull-left">View Details</span>
-                          <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
-
-                          <div class="clearfix"></div>
-                      </div>
-                  </a> -->
               </div>
           </div>
       </div>
+
       <!-- /.row -->
       <div class="row">
           <div class="col-lg-8">
+            <!-- ISLR SUMMARY STATISTICS -->
               <div class="panel panel-default">
                   <div class="panel-heading">
-                      <i class="fa"></i> ISLR Dataset Summary Statistics for Numeric Variables
-                      <div class="pull-right">
-                          <div class="btn-group">
-                              <!-- <button type="button" class="btn btn-default btn-xs dropdown-toggle"
-                                      data-toggle="dropdown">
-                                  Actions
-                                  <span class="caret"></span>
-                              </button> -->
-                          </div>
-                      </div>
+                      <i class="fa"></i> ISLR Datasets, Summary Statistics and Regression
                   </div>
                   <!-- /.panel-heading -->
                   <div class="panel-body">
                       <div class="row">
                           <div class="col-lg-12">
                             <div class="form-group">
-                            <select name="data" class="form-control" [(ngModel)]='sumStatSelected'>
-                              <option *ngFor='let dsn of datasets' value="{{dsn}}" >{{dsn}}</option>
-                            </select>
-                            <br>
-                            <button (click)='getSumStats()' type='submit' class='btn btn-success btn-sx'>Select</button>
+                                <label>Choose Analysis Type</label>
+                                <select name="choice" class="form-control" (ngModelChange)='changeChoice()' [(ngModel)]='choice'>
+                                  <option selected disabled>Choose Analysis</option>
+                                  <option *ngFor='let c of choices' value="{{c}}" >{{c}}</option>
+                                </select>
+                                <div *ngIf="choice !== 'Choose Analysis'">
+                                  <br>
+                                  <label>Select ISLR Data Set</label>
+                                  <select  name="dsets" class="form-control"  [(ngModel)]='selectedDataSet'>
+                                    <option *ngFor='let dset of datasets' value="{{dset}}" >{{dset}}</option>
+                                  </select>
+
+                                  <div *ngIf="choice === 'Regression' && varNames === null">
+                                    <br>
+                                    <button  (click)='getVarNames()' type='submit' class='btn btn-primary btn-sx' >Get Variable Names</button>
+                                    <br>
+                                  </div>
+
+                                  <div *ngIf="varNames !== null && choice === 'Regression'">
+                                    <br>
+                                    <label>Select Response Variable</label>
+                                    <select  name="var" class="form-control" [(ngModel)]='respVar'>
+                                      <option *ngFor='let va of varNames' >{{va}}</option>
+                                    </select>
+                                  </div>
+
+                                  <br>
+                                  <button *ngIf="choice === 'Stats'" (click)='getSumStats()' type='submit' class='btn btn-success btn-sx'>Get Stats</button>
+                                  <button *ngIf="choice === 'Regression' && varNames !== null && respVar !== null" (click)='getLinModel()' type='submit' class='btn btn-success btn-sx'>Perform Regression</button>
+                                  <button *ngIf="choice === 'Data'" (click)='getSumStats()' type='submit' class='btn btn-success btn-sx'>Get Data</button>
+                                </div>
                           </div>
                               <div class="table-responsive">
                                   <table *ngIf='sumStats !== null' class="table table-bordered table-hover table-striped">
                                       <thead>
                                       <tr *ngIf='sumStats !== null'>
-                                          <!-- <th>Statistic</th> -->
                                           <th *ngFor='let name of sumStats.names'>{{name}}</th>
                                       </tr>
                                       </thead>
@@ -339,30 +309,32 @@
                                       </tr>
                                       </tbody>
                                   </table>
+                                  <table *ngIf='linModel !== null' class="table table-bordered table-hover table-striped">
+                                      <thead>
+                                      <tr *ngIf='linModel !== null'>
+                                          <th *ngFor='let name of linModel.names'>{{name}}</th>
+                                      </tr>
+                                      </thead>
+                                      <tbody>
+                                      <tr *ngFor="let i = index; let n of linArr ">
+                                          <td *ngFor='let res of linModel.objValues'>{{res[n]}}
+                                          </td>
+                                      </tr>
+                                      </tbody>
+                                  </table>
                               </div>
-                              <!-- /.table-responsive -->
                           </div>
-                          <!-- /.col-lg-4 (nested) -->
-                          <!-- <div class="col-lg-8">
-                              <div id="morris-bar-chart"></div>
-                          </div> -->
-                          <!-- /.col-lg-8 (nested) -->
                       </div>
                   </div>
                   <!-- /.panel-body -->
               </div>
+              <!-- END SUMMARY STATISTICS-->
+
               <!-- /.panel -->
               <div class="panel panel-default">
                   <div class="panel-heading">
                       <i class="fa "></i>Select An ISLR (R) Data Set To View Raw Data
                       <div class="pull-right">
-                          <!-- <div class="btn-group">
-                              <button type="button" class="btn btn-default btn-xs dropdown-toggle"
-                                      data-toggle="dropdown">
-                                  Actions
-                                  <span class="caret"></span>
-                              </button>
-                          </div> -->
                       </div>
                   </div>
                   <!-- /.panel-heading -->
@@ -396,10 +368,6 @@
                               </div>
                               <!-- /.table-responsive -->
                           </div>
-                          <!-- /.col-lg-4 (nested) -->
-                          <!-- <div class="col-lg-8">
-                              <div id="morris-bar-chart"></div>
-                          </div> -->
                           <!-- /.col-lg-8 (nested) -->
                       </div>
                       <!-- /.row -->
@@ -409,156 +377,68 @@
               <!-- /.panel -->
               <div class="panel panel-default">
                   <div class="panel-heading">
-                      <i class="fa fa-clock-o fa-fw"></i> Responsive Timeline
+                      <i class="fa "></i>Regression Results on ISLR Data Sets (Numeric Vars Only)
+                      <div class="pull-right">
+                          <!-- <div class="btn-group">
+                              <button type="button" class="btn btn-default btn-xs dropdown-toggle"
+                                      data-toggle="dropdown">
+                                  Actions
+                                  <span class="caret"></span>
+                              </button>
+                          </div> -->
+                      </div>
                   </div>
                   <!-- /.panel-heading -->
+                  <!-- DISPLAY ISLR DATA-->
                   <div class="panel-body">
-                      <ul class="timeline">
-                          <li>
-                              <div class="timeline-badge"><i class="fa fa-check"></i>
-                              </div>
-                              <div class="timeline-panel">
-                                  <div class="timeline-heading">
-                                      <h4 class="timeline-title">Lorem ipsum dolor</h4>
+                      <div class="row">
+                          <div class="col-lg-12">
+                            <div class="form-group">
+                            <select name="data" class="form-control" [(ngModel)]='dataModelNames'>
+                              <option *ngFor='let dsn of datasets' value="{{dsn}}" >{{dsn}}</option>
+                            </select>
+                            <button (click)='getVarNames()' type='submit' class='btn btn-success btn-sx'>Select</button>
+                            <!-- <br>
+                            <select *ngIf='linModelSelected !== null' name="data" class="form-control" [(ngModel)]='linModelSelected'>
+                                <option *ngFor='let dsn of datasets' value="{{dsn}}" >{{dsn}}</option>
+                            </select> -->
+                            <br>
 
-                                      <p>
-                                          <small class="text-muted"><i class="fa fa-clock-o"></i> 11 hours ago via
-                                              Twitter
-                                          </small>
-                                      </p>
-                                  </div>
-                                  <div class="timeline-body">
-                                      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Libero
-                                          laboriosam
-                                          dolor perspiciatis omnis exercitationem. Beatae, officia pariatur? Est
-                                          cum
-                                          veniam excepturi. Maiores praesentium, porro voluptas suscipit facere
-                                          rem
-                                          dicta, debitis.</p>
-                                  </div>
+                            <button *ngIf='data != null' (click)='prevTen()' type='submit' class='btn btn-success btn-sx' style='margin-left: 10px'>Prev 10</button>
+                            <button *ngIf='data != null' (click)='nextTen()' type='submit' class='btn btn-success btn-sx' style='margin-left: 10px'>Next 10</button>
+                          </div>
+                              <div class="table-responsive">
+                                  <table *ngIf='data !== null' class="table table-bordered table-hover table-striped">
+                                      <thead>
+                                      <tr *ngIf='data !== null'>
+                                          <th *ngFor='let name of data.names'>{{name}}</th>
+                                      </tr>
+                                      </thead>
+                                      <tbody>
+                                      <tr *ngFor="let i = index; let n of arr ">
+                                          <td *ngFor='let v of data.objValues; let j = index'>{{v[n]}}
+                                          </td>
+                                      </tr>
+                                      </tbody>
+                                  </table>
                               </div>
-                          </li>
-                          <li class="timeline-inverted">
-                              <div class="timeline-badge warning"><i class="fa fa-credit-card"></i>
-                              </div>
-                              <div class="timeline-panel">
-                                  <div class="timeline-heading">
-                                      <h4 class="timeline-title">Lorem ipsum dolor</h4>
-                                  </div>
-                                  <div class="timeline-body">
-                                      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Autem dolorem
-                                          quibusdam, tenetur commodi provident cumque magni voluptatem libero,
-                                          quis
-                                          rerum. Fugiat esse debitis optio, tempore. Animi officiis alias, officia
-                                          repellendus.</p>
-
-                                      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laudantium
-                                          maiores
-                                          odit qui est tempora eos, nostrum provident explicabo dignissimos
-                                          debitis
-                                          vel! Adipisci eius voluptates, ad aut recusandae minus eaque facere.</p>
-                                  </div>
-                              </div>
-                          </li>
-                          <li>
-                              <div class="timeline-badge danger"><i class="fa fa-bomb"></i>
-                              </div>
-                              <div class="timeline-panel">
-                                  <div class="timeline-heading">
-                                      <h4 class="timeline-title">Lorem ipsum dolor</h4>
-                                  </div>
-                                  <div class="timeline-body">
-                                      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Repellendus
-                                          numquam
-                                          facilis enim eaque, tenetur nam id qui vel velit similique nihil iure
-                                          molestias aliquam, voluptatem totam quaerat, magni commodi quisquam.</p>
-                                  </div>
-                              </div>
-                          </li>
-                          <li class="timeline-inverted">
-                              <div class="timeline-panel">
-                                  <div class="timeline-heading">
-                                      <h4 class="timeline-title">Lorem ipsum dolor</h4>
-                                  </div>
-                                  <div class="timeline-body">
-                                      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptates est
-                                          quaerat asperiores sapiente, eligendi, nihil. Itaque quos, alias
-                                          sapiente
-                                          rerum quas odit! Aperiam officiis quidem delectus libero, omnis ut
-                                          debitis!</p>
-                                  </div>
-                              </div>
-                          </li>
-                          <li>
-                              <div class="timeline-badge info"><i class="fa fa-save"></i>
-                              </div>
-                              <div class="timeline-panel">
-                                  <div class="timeline-heading">
-                                      <h4 class="timeline-title">Lorem ipsum dolor</h4>
-                                  </div>
-                                  <div class="timeline-body">
-                                      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nobis minus
-                                          modi
-                                          quam ipsum alias at est molestiae excepturi delectus nesciunt, quibusdam
-                                          debitis amet, beatae consequuntur impedit nulla qui! Laborum, atque.</p>
-                                      <hr>
-                                      <div class="btn-group">
-                                          <button type="button" class="btn btn-primary btn-sm dropdown-toggle"
-                                                  data-toggle="dropdown">
-                                              <i class="fa fa-gear"></i> <span class="caret"></span>
-                                          </button>
-                                          <ul class="dropdown-menu" role="menu">
-                                              <li><a href="#">Action</a>
-                                              </li>
-                                              <li><a href="#">Another action</a>
-                                              </li>
-                                              <li><a href="#">Something else here</a>
-                                              </li>
-                                              <li class="divider"></li>
-                                              <li><a href="#">Separated link</a>
-                                              </li>
-                                          </ul>
-                                      </div>
-                                  </div>
-                              </div>
-                          </li>
-                          <li>
-                              <div class="timeline-panel">
-                                  <div class="timeline-heading">
-                                      <h4 class="timeline-title">Lorem ipsum dolor</h4>
-                                  </div>
-                                  <div class="timeline-body">
-                                      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sequi fuga odio
-                                          quibusdam. Iure expedita, incidunt unde quis nam! Quod, quisquam.
-                                          Officia
-                                          quam qui adipisci quas consequuntur nostrum sequi. Consequuntur,
-                                          commodi.</p>
-                                  </div>
-                              </div>
-                          </li>
-                          <li class="timeline-inverted">
-                              <div class="timeline-badge success"><i class="fa fa-graduation-cap"></i>
-                              </div>
-                              <div class="timeline-panel">
-                                  <div class="timeline-heading">
-                                      <h4 class="timeline-title">Lorem ipsum dolor</h4>
-                                  </div>
-                                  <div class="timeline-body">
-                                      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Deserunt
-                                          obcaecati,
-                                          quaerat tempore officia voluptas debitis consectetur culpa amet,
-                                          accusamus
-                                          dolorum fugiat, animi dicta aperiam, enim incidunt quisquam maxime neque
-                                          eaque.</p>
-                                  </div>
-                              </div>
-                          </li>
-                      </ul>
+                              <!-- /.table-responsive -->
+                          </div>
+                          <!-- /.col-lg-4 (nested) -->
+                          <!-- <div class="col-lg-8">
+                              <div id="morris-bar-chart"></div>
+                          </div> -->
+                          <!-- /.col-lg-8 (nested) -->
+                      </div>
+                      <!-- /.row -->
                   </div>
+                  <!-- /.panel-body -->
                   <!-- /.panel-body -->
               </div>
               <!-- /.panel -->
           </div>
+
+          <!-- SIDE BAR MATERIAL (RIGHT)-->
           <!-- /.col-lg-8 -->
           <div class="col-lg-4">
               <div class="panel panel-default">

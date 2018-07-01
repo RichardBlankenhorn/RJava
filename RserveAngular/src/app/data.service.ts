@@ -29,5 +29,25 @@ export class DataService {
     );
   }
 
+  getLinModel(dsn, respVar) {
+    console.log(dsn + ' : ' + respVar);
+    return this.http.get(this.baseUrl + 'api/getLinModel/' + dsn + '/response/' + respVar).pipe(
+      catchError((err: any) => {
+        console.log(err);
+        return throwError('Lin Model Error');
+      })
+    );
+  }
+
+  getVarNames(dsn) {
+    console.log(dsn);
+    return this.http.get(this.baseUrl + 'api/getVarNames/' + dsn).pipe(
+      catchError((err: any) => {
+        console.log(err);
+        return throwError('Get Var Names Error');
+      })
+    );
+  }
+
   constructor(private http: HttpClient) { }
 }

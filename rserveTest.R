@@ -73,9 +73,13 @@ linRegression <- function(dsn, respVar) {
   form <- as.formula(paste(respVar, "~", paste(myVec, collapse=" + ")))
   mod <- glm(form, data = dta)
   sum <- summary(mod)
-  return(list(sum['coefficients'], row.names(as.data.frame(sum['coefficients'])), sum['aic'], sum['null.deviance'], sum['deviance']))
+  return(list(as.data.frame(sum['coefficients']), row.names(as.data.frame(sum['coefficients'])), sum['aic'], sum['null.deviance'], sum['deviance'], columnNames))
 }
 
-
-
+# Get Variable Names For DataSet
+getVarNames <- function(dsn) {
+  dta <- eval(parse(text=dsn))
+  columnNames <- colnames(dta)
+  return(list(columnNames))
+}
 
